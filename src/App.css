@@ -158,6 +158,8 @@
 }
 
 .character-detail__info .location {
+  display: flex;
+  flex-direction: column;
   color: var(--slate-500);
   margin-bottom: 1rem;
 }

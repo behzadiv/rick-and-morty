@@ -1,15 +1,10 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
-import { allCharacters } from "../../data/data";
 
-const CharacterList = () => {
+const CharacterList = ({allCharacters}) => {
   return (
     <div className="character-list">
       {allCharacters.map((character) => {
-        return (
-          <div className="" key={character.id}>
-            <CharacterItem character={character} />
-          </div>
-        );
+        return <CharacterItem character={character} key={character.id} />;
       })}
     </div>
   );

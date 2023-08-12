@@ -1,17 +1,19 @@
+import { useState } from "react";
 import Navbar from "./components/Navbar";
-import "./App.css";
 import CharacterList from "./components/CharacterList";
+import CharacterDetail from "./components/CharacterDetail";
+import { allCharacters } from "../data/data";
+import "./App.css";
 
 export default function App() {
-  return(
+  const [characters, setCharacters] = useState(allCharacters);
+  return (
     <div className="app">
-
-      <Navbar/>
+      <Navbar numOfCharacters={characters.length} />
       <div className="main">
-        <CharacterList/>
-        <div className="character-detail"></div>
+        <CharacterList allCharacters={characters} />
+        <CharacterDetail />
       </div>
     </div>
-    
   );
 }
