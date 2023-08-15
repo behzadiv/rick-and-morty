@@ -9,24 +9,32 @@ import axios from "axios";
 
 export default function App() {
   const [characters, setCharacters] = useState(allCharacters);
-  const [name, setName] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [debouncedInputValue, setDebouncedInputValue] = useState("");
 
   useEffect(() => {
     axios
       .get(
-        !name
+        !debouncedInputValue
           ? "https://rickandmortyapi.com/api/character"
-          : `https://rickandmortyapi.com/api/character/?name=${name}`
+          : `https://rickandmortyapi.com/api/character/?name=${debouncedInputValue}`
       )
       .then(({ data }) => setCharacters(data.results.slice(0, 5)))
       .catch((err) => {
         console.log(err.response.data);
         return setCharacters([]);
       });
-  }, [name]);
+  }, [debouncedInputValue]);
+
+  useEffect(() => {
+    const debouncedInputValueId = setTimeout(() => {
+      setDebouncedInputValue(inputValue);
+    }, 500);
+    return () => clearTimeout(debouncedInputValueId);
+  }, [inputValue, 500]);
 
   const searchHandler = (value) => {
-    setName(value);
+    setInputValue(value);
   };
 
   return (
