@@ -1,11 +1,15 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
 
-const CharacterList = ({allCharacters}) => {
+const CharacterList = ({ allCharacters }) => {
   return (
-    <div className="character-list">
-      {allCharacters.map((character) => {
-        return <CharacterItem character={character} key={character.id} />;
-      })}
+    <div className="characters-list">
+      {allCharacters.length ? (
+        allCharacters.map((character) => {
+          return <CharacterItem character={character} key={character.id} />;
+        })
+      ) : (
+        <p className="characters-list__empty">There is nothing here...</p>
+      )}
     </div>
   );
 };
