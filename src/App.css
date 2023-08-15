@@ -205,6 +205,8 @@
   background-color: var(--slate-800);
   border-radius: 1rem;
   padding: 1rem;
+  max-height: 25rem;
+  overflow-y: scroll;
 }
 
 .character-episodes .title {

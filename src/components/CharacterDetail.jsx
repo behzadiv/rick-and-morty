@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
-import { episodes } from "../../data/data";
 
 const CharacterDetail = ({ characterId }) => {
   const [character, setCharacter] = useState(null);
+  const [episodes, setEpisodes] = useState([]);
 
   useEffect(() => {
     if (!characterId) {
@@ -12,15 +12,24 @@ const CharacterDetail = ({ characterId }) => {
     }
     axios
       .get(`https://rickandmortyapi.com/api/character/${characterId}`)
-      .then(({ data }) => setCharacter(data))
+      .then(({ data }) => {
+        setCharacter(data);
+        const episodesId = data.episode.map((ep) => ep.split("/").at(-1));
+        axios
+          .get(`https://rickandmortyapi.com/api/episode/${episodesId}`)
+          .then(({ data: episodes }) =>
+            setEpisodes([episodes].flat())
+          ) //flat => when our data was object
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
   }, [characterId]);
 
   return (
     <div className="character-detail__container">
       {character ? (
-        <div className="character-detail">
-          <div>
+        <>
+          <div className="character-detail">
             <img
               src={character.image}
               alt=""
@@ -49,8 +58,8 @@ const CharacterDetail = ({ characterId }) => {
               </div>
             </div>
           </div>
-          <CharacterEpisodes />
-        </div>
+          <CharacterEpisodes episodes={episodes} />
+        </>
       ) : (
         <p className="character-detail__empty">Please Select A Character ...</p>
       )}
@@ -60,7 +69,7 @@ const CharacterDetail = ({ characterId }) => {
 
 export default CharacterDetail;
 
-const CharacterEpisodes = () => {
+const CharacterEpisodes = ({ episodes }) => {
   return (
     <div className="character-episodes">
       <div className="title">
@@ -70,7 +79,7 @@ const CharacterEpisodes = () => {
         </span>
       </div>
       <ul>
-        {episodes.map((episode, index) => {
+        {episodes?.map((episode, index) => {
           return (
             <li key={episode.id}>
               <div>
