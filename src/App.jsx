@@ -33,7 +33,7 @@ export default function App() {
   }, [inputValue, 500]);
 
   const handleCharacterId = (id) => {
-    setCharacterId(id);
+    setCharacterId((prevState) => (prevState === id ? null : id));
   };
 
   return (

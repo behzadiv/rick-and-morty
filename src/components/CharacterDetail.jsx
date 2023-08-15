@@ -4,10 +4,12 @@ import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 import { episodes } from "../../data/data";
 
 const CharacterDetail = ({ characterId }) => {
-  const [character, setCharacter] = useState();
+  const [character, setCharacter] = useState(null);
 
   useEffect(() => {
-    if (!characterId) return;
+    if (!characterId) {
+      return setCharacter(null);
+    }
     axios
       .get(`https://rickandmortyapi.com/api/character/${characterId}`)
       .then(({ data }) => setCharacter(data))
@@ -50,7 +52,7 @@ const CharacterDetail = ({ characterId }) => {
           <CharacterEpisodes />
         </div>
       ) : (
-        <p className="character-detail__empty">Please Select Character ...</p>
+        <p className="character-detail__empty">Please Select A Character ...</p>
       )}
     </div>
   );
