@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./components/Navbar";
+import Navbar, { Search } from "./components/Navbar";
 import CharacterList from "./components/CharacterList";
 import CharacterDetail from "./components/CharacterDetail";
 import { allCharacters } from "../data/data";
@@ -33,16 +33,11 @@ export default function App() {
     return () => clearTimeout(debouncedInputValueId);
   }, [inputValue, 500]);
 
-  const searchHandler = (value) => {
-    setInputValue(value);
-  };
-
   return (
     <div className="app">
-      <Navbar
-        numOfCharacters={characters.length}
-        onSearchHandler={searchHandler}
-      />
+      <Navbar numOfCharacters={characters.length}>
+        <Search query={inputValue} setQuery={setInputValue} />
+      </Navbar>
       <div className="main">
         <CharacterList allCharacters={characters} />
         <CharacterDetail />
