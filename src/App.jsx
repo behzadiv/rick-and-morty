@@ -45,6 +45,7 @@ export default function App() {
         <CharacterList
           allCharacters={characters}
           onSetCharacterId={handleCharacterId}
+          characterId={characterId}
         />
         <CharacterDetail characterId={characterId} />
       </div>

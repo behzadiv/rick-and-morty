@@ -1,6 +1,6 @@
-import { EyeIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-const CharacterList = ({ allCharacters, onSetCharacterId }) => {
+const CharacterList = ({ allCharacters, onSetCharacterId, characterId }) => {
   return (
     <div className="characters-list">
       {allCharacters.length ? (
@@ -10,6 +10,7 @@ const CharacterList = ({ allCharacters, onSetCharacterId }) => {
               character={character}
               key={character.id}
               onSetCharacterId={onSetCharacterId}
+              characterId={characterId}
             />
           );
         })
@@ -22,7 +23,7 @@ const CharacterList = ({ allCharacters, onSetCharacterId }) => {
 
 export default CharacterList;
 
-const CharacterItem = ({ character, onSetCharacterId }) => {
+const CharacterItem = ({ character, onSetCharacterId, characterId }) => {
   return (
     <div className="list__item">
       <img src={character.image} alt="" />
@@ -41,7 +42,7 @@ const CharacterItem = ({ character, onSetCharacterId }) => {
         className="icon red"
         onClick={() => onSetCharacterId(character.id)}
       >
-        <EyeIcon />
+        {characterId === character.id ? <EyeSlashIcon /> : <EyeIcon />}
       </button>
     </div>
   );
