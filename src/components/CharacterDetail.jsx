@@ -1,33 +1,57 @@
-import { character, episodes } from "../../data/data";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
+import { episodes } from "../../data/data";
 
-const CharacterDetail = () => {
+const CharacterDetail = ({ characterId }) => {
+  const [character, setCharacter] = useState();
+
+  useEffect(() => {
+    if (!characterId) return;
+    axios
+      .get(`https://rickandmortyapi.com/api/character/${characterId}`)
+      .then(({ data }) => setCharacter(data))
+      .catch((err) => console.log(err));
+  }, [characterId]);
+
   return (
-    <div>
-      <div className="character-detail">
-        <img src={character.image} alt="" className="character-detail__img" />
-        <div className="character-detail__info">
-          <h3 className="name">
-            <span>{character.gender === "Male" ? "👨" : "👧"} </span>
-            <span>{character.name}</span>
-          </h3>
-          <div className="info">
-            <span
-              className={`status ${character.status === "Dead" ? "red" : ""}`}
-            ></span>
-            <span>{character.status}</span>
-            <span> - {character.species}</span>
+    <div className="character-detail__container">
+      {character ? (
+        <div className="character-detail">
+          <div>
+            <img
+              src={character.image}
+              alt=""
+              className="character-detail__img"
+            />
+            <div className="character-detail__info">
+              <h3 className="name">
+                <span>{character.gender === "Male" ? "👨" : "👧"} </span>
+                <span>{character.name}</span>
+              </h3>
+              <div className="info">
+                <span
+                  className={`status ${
+                    character.status === "Dead" ? "red" : ""
+                  }`}
+                ></span>
+                <span>{character.status}</span>
+                <span> - {character.species}</span>
+              </div>
+              <div className="location">
+                <span>Last known location</span>
+                <span> {character.location.name}</span>
+              </div>
+              <div className="actions">
+                <button className="btn btn--primary">Add to favorite</button>
+              </div>
+            </div>
           </div>
-          <div className="location">
-            <span>Last known location</span>
-            <span> {character.location.name}</span>
-          </div>
-          <div className="actions">
-            <button className="btn btn--primary">Add to favorite</button>
-          </div>
+          <CharacterEpisodes />
         </div>
-      </div>
-      <CharacterEpisodes />
+      ) : (
+        <p className="character-detail__empty">Please Select Character ...</p>
+      )}
     </div>
   );
 };

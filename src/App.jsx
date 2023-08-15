@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Navbar, { Search } from "./components/Navbar";
 import CharacterList from "./components/CharacterList";
 import CharacterDetail from "./components/CharacterDetail";
-import { allCharacters } from "../data/data";
 import "./App.css";
-import { useEffect } from "react";
-import axios from "axios";
 
 export default function App() {
-  const [characters, setCharacters] = useState(allCharacters);
+  const [characters, setCharacters] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
+  const [characterId, setCharacterId] = useState(null);
 
   useEffect(() => {
     axios
@@ -33,14 +32,21 @@ export default function App() {
     return () => clearTimeout(debouncedInputValueId);
   }, [inputValue, 500]);
 
+  const handleCharacterId = (id) => {
+    setCharacterId(id);
+  };
+
   return (
     <div className="app">
       <Navbar numOfCharacters={characters.length}>
         <Search query={inputValue} setQuery={setInputValue} />
       </Navbar>
       <div className="main">
-        <CharacterList allCharacters={characters} />
-        <CharacterDetail />
+        <CharacterList
+          allCharacters={characters}
+          onSetCharacterId={handleCharacterId}
+        />
+        <CharacterDetail characterId={characterId} />
       </div>
     </div>
   );

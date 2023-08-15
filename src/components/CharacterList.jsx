@@ -1,11 +1,17 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
 
-const CharacterList = ({ allCharacters }) => {
+const CharacterList = ({ allCharacters, onSetCharacterId }) => {
   return (
     <div className="characters-list">
       {allCharacters.length ? (
         allCharacters.map((character) => {
-          return <CharacterItem character={character} key={character.id} />;
+          return (
+            <CharacterItem
+              character={character}
+              key={character.id}
+              onSetCharacterId={onSetCharacterId}
+            />
+          );
         })
       ) : (
         <p className="characters-list__empty">There is nothing here...</p>
@@ -16,7 +22,7 @@ const CharacterList = ({ allCharacters }) => {
 
 export default CharacterList;
 
-const CharacterItem = ({ character }) => {
+const CharacterItem = ({ character, onSetCharacterId }) => {
   return (
     <div className="list__item">
       <img src={character.image} alt="" />
@@ -31,7 +37,10 @@ const CharacterItem = ({ character }) => {
         <span>{character.status}</span>
         <span> - {character.species}</span>
       </div>
-      <button className="icon red">
+      <button
+        className="icon red"
+        onClick={() => onSetCharacterId(character.id)}
+      >
         <EyeIcon />
       </button>
     </div>

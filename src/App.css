@@ -135,7 +135,9 @@
 .status.red {
   background-color: var(--rose-600);
 }
-
+.character-detail__container {
+  width: 60%;
+}
 .character-detail {
   display: flex;
   flex-direction: column;
@@ -143,6 +145,14 @@
   overflow: hidden;
   border-radius: 0.5rem;
   margin-bottom: 2rem;
+}
+.character-detail__empty {
+  color: var(--slate-300);
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
 }
 
 .character-detail__img {
