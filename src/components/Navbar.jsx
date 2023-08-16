@@ -1,17 +1,37 @@
+import { useState } from "react";
+import Modal from "./Modal";
 import { HeartIcon } from "@heroicons/react/24/outline";
 
-const Navbar = ({ numOfCharacters, children, favoriteCharacters,onToggleModal }) => {
-  
+const Navbar = ({
+  numOfCharacters,
+  children,
+  favoriteCharacters,
+  onToggleFavorite,
+}) => {
+  const [isShowModal, setIsShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setIsShowModal(!isShowModal);
+  };
+
   return (
-    <div className="navbar">
-      <div className="navbar__logo">LOGO 😄</div>
-      {children}
-      <div className="navbar__result">Found {numOfCharacters} Results</div>
-      <div className="heart" onClick={() => onToggleModal()}>
-        <HeartIcon className="icon" />
-        <span className="badge">{favoriteCharacters.length}</span>
+    <>
+      <Modal
+        isShowModal={isShowModal}
+        favoriteCharacters={favoriteCharacters}
+        toggleModal={toggleModal}
+        onToggleFavorite={onToggleFavorite}
+      />
+      <div className="navbar">
+        <div className="navbar__logo">LOGO 😄</div>
+        {children}
+        <div className="navbar__result">Found {numOfCharacters} Results</div>
+        <div className="heart" onClick={() => toggleModal()}>
+          <HeartIcon className="icon" />
+          <span className="badge">{favoriteCharacters.length}</span>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

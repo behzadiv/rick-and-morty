@@ -3,7 +3,6 @@ import axios from "axios";
 import Navbar, { Search } from "./components/Navbar";
 import CharacterList from "./components/CharacterList";
 import CharacterDetail from "./components/CharacterDetail";
-import Modal from "./components/Modal";
 import "./App.css";
 
 export default function App() {
@@ -11,7 +10,6 @@ export default function App() {
   const [inputValue, setInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
-  const [isShowModal, setIsShowModal] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,22 +50,13 @@ export default function App() {
       setFavoriteCharacters(filtered);
     }
   };
-  const toggleModal = () => {
-    setIsShowModal(!isShowModal);
-  };
 
   return (
     <div className="app">
-      <Modal
-        isShowModal={isShowModal}
-        favoriteCharacters={favoriteCharacters}
-        toggleModal={toggleModal}
-        onToggleFavorite={toggleFavorite}
-      />
       <Navbar
         numOfCharacters={characters.length}
         favoriteCharacters={favoriteCharacters}
-        onToggleModal={toggleModal}
+        onToggleFavorite={toggleFavorite}
       >
         <Search query={inputValue} setQuery={setInputValue} />
       </Navbar>

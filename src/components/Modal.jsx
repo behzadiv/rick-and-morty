@@ -1,5 +1,5 @@
-import { XCircleIcon } from "@heroicons/react/24/outline";
-import CharacterList from "./CharacterList";
+import { CharacterItem } from "./CharacterList";
+import { TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 const Modal = ({
   isShowModal,
@@ -17,15 +17,20 @@ const Modal = ({
       ></div>
       <div className={isShowModal ? "modal" : "hidden"}>
         <div className="modal__header">
-          <p className="title"></p>
+          <h2 className="title">List of favorites character</h2>
           <XCircleIcon className="icon close" onClick={toggleModal} />
         </div>
         {favoriteCharacters.length ? (
-          <CharacterList
-            allCharacters={favoriteCharacters}
-            isModalItems={true}
-            onToggleFavorite={onToggleFavorite}
-          />
+          favoriteCharacters.map((item) => (
+            <CharacterItem key={item.id} character={item}>
+              <button
+                className="icon red"
+                onClick={() => onToggleFavorite(item)}
+              >
+                <TrashIcon />
+              </button>
+            </CharacterItem>
+          ))
         ) : (
           <p className="characters-list__empty">There is nothing here...</p>
         )}
