@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 
-const CharacterDetail = ({ characterId }) => {
+const CharacterDetail = ({ characterId, onAddFavorite }) => {
   const [character, setCharacter] = useState(null);
   const [episodes, setEpisodes] = useState([]);
 
@@ -17,9 +17,7 @@ const CharacterDetail = ({ characterId }) => {
         const episodesId = data.episode.map((ep) => ep.split("/").at(-1));
         axios
           .get(`https://rickandmortyapi.com/api/episode/${episodesId}`)
-          .then(({ data: episodes }) =>
-            setEpisodes([episodes].flat())
-          ) //flat => when our data was object
+          .then(({ data: episodes }) => setEpisodes([episodes].flat())) //flat => when our data was object
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
@@ -54,7 +52,12 @@ const CharacterDetail = ({ characterId }) => {
                 <span> {character.location.name}</span>
               </div>
               <div className="actions">
-                <button className="btn btn--primary">Add to favorite</button>
+                <button
+                  className="btn btn--primary"
+                  onClick={() => onAddFavorite(character)}
+                >
+                  Add to favorite
+                </button>
               </div>
             </div>
           </div>

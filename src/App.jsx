@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar, { Search } from "./components/Navbar";
 import CharacterList from "./components/CharacterList";
 import CharacterDetail from "./components/CharacterDetail";
+import Modal from "./components/Modal";
 import "./App.css";
 
 export default function App() {
@@ -10,6 +11,7 @@ export default function App() {
   const [inputValue, setInputValue] = useState("");
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
+  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
 
   useEffect(() => {
     axios
@@ -35,10 +37,17 @@ export default function App() {
   const handleCharacterId = (id) => {
     setCharacterId((prevState) => (prevState === id ? null : id));
   };
-
+  const addFavorite = (favCharacter) => {
+    setFavoriteCharacters((prevstate) => [...prevstate, favCharacter]);
+  };
+  
   return (
     <div className="app">
-      <Navbar numOfCharacters={characters.length}>
+      <Navbar
+        numOfCharacters={characters.length}
+        favoriteCharacters={favoriteCharacters}
+        onToggleModal={toggleModal}
+      >
         <Search query={inputValue} setQuery={setInputValue} />
       </Navbar>
       <div className="main">
@@ -47,7 +56,10 @@ export default function App() {
           onSetCharacterId={handleCharacterId}
           characterId={characterId}
         />
-        <CharacterDetail characterId={characterId} />
+        <CharacterDetail
+          characterId={characterId}
+          onAddFavorite={addFavorite}
+        />
       </div>
     </div>
   );
