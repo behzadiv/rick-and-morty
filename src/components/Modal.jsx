@@ -1,7 +1,12 @@
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import CharacterList from "./CharacterList";
 
-const Modal = ({ isShowModal, favoriteCharacters, toggleModal }) => {
+const Modal = ({
+  isShowModal,
+  favoriteCharacters,
+  toggleModal,
+  onDeleteFavItem,
+}) => {
   return (
     <>
       <div
@@ -19,6 +24,7 @@ const Modal = ({ isShowModal, favoriteCharacters, toggleModal }) => {
           <CharacterList
             allCharacters={favoriteCharacters}
             isModalItems={true}
+            onDeleteFavItem={onDeleteFavItem}
           />
         ) : (
           <p className="characters-list__empty">There is nothing here...</p>

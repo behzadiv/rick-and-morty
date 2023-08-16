@@ -44,6 +44,10 @@ export default function App() {
   const toggleModal = () => {
     setIsShowModal(!isShowModal);
   };
+  const deleteFavItem = (id) => {
+    const filtered = favoriteCharacters.filter((item) => item.id !== id);
+    setFavoriteCharacters(filtered);
+  };
 
   return (
     <div className="app">
@@ -51,6 +55,7 @@ export default function App() {
         isShowModal={isShowModal}
         favoriteCharacters={favoriteCharacters}
         toggleModal={toggleModal}
+        onDeleteFavItem={deleteFavItem}
       />
       <Navbar
         numOfCharacters={characters.length}

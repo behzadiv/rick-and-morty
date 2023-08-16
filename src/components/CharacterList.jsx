@@ -5,6 +5,7 @@ const CharacterList = ({
   onSetCharacterId,
   characterId,
   isModalItems,
+  onDeleteFavItem
 }) => {
   return (
     <div>
@@ -17,6 +18,7 @@ const CharacterList = ({
               onSetCharacterId={onSetCharacterId}
               characterId={characterId}
               isModalItems={isModalItems}
+              onDeleteFavItem={onDeleteFavItem}
             />
           );
         })
@@ -34,6 +36,7 @@ const CharacterItem = ({
   onSetCharacterId,
   characterId,
   isModalItems,
+  onDeleteFavItem
 }) => {
   return (
     <div className="list__item">
@@ -52,7 +55,7 @@ const CharacterItem = ({
       {isModalItems ? (
         <button
           className="icon red"
-          onClick={() => onSetCharacterId(character.id)}
+          onClick={() => onDeleteFavItem(character.id)}
         >
           <TrashIcon />
         </button>
