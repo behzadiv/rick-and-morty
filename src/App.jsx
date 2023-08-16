@@ -9,7 +9,9 @@ export default function App() {
   const [characters, setCharacters] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
-  const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+  const [favoriteCharacters, setFavoriteCharacters] = useState(
+    () => JSON.parse(localStorage.getItem("favCharacter")) || []
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -33,6 +35,10 @@ export default function App() {
       controller.abort();
     };
   }, [inputValue]);
+  useEffect(() => {
+    console.log(favoriteCharacters);
+    localStorage.setItem("favCharacter", JSON.stringify(favoriteCharacters));
+  }, [favoriteCharacters]);
 
   const handleCharacterId = (id) => {
     setCharacterId((prevState) => (prevState === id ? null : id));
