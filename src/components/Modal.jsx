@@ -5,7 +5,7 @@ const Modal = ({
   isShowModal,
   favoriteCharacters,
   toggleModal,
-  onDeleteFavItem,
+  onToggleFavorite,
 }) => {
   return (
     <>
@@ -24,7 +24,7 @@ const Modal = ({
           <CharacterList
             allCharacters={favoriteCharacters}
             isModalItems={true}
-            onDeleteFavItem={onDeleteFavItem}
+            onToggleFavorite={onToggleFavorite}
           />
         ) : (
           <p className="characters-list__empty">There is nothing here...</p>

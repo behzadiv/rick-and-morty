@@ -38,15 +38,21 @@ export default function App() {
   const handleCharacterId = (id) => {
     setCharacterId((prevState) => (prevState === id ? null : id));
   };
-  const addFavorite = (favCharacter) => {
-    setFavoriteCharacters((prevstate) => [...prevstate, favCharacter]);
+  const toggleFavorite = (favCharacter) => {
+    const findedCharacter = favoriteCharacters.findIndex(
+      (item) => item.id === favCharacter.id
+    );
+    if (findedCharacter < 0) {
+      setFavoriteCharacters((prevstate) => [...prevstate, favCharacter]);
+    } else {
+      const filtered = favoriteCharacters.filter(
+        (item) => item.id !== favCharacter.id
+      );
+      setFavoriteCharacters(filtered);
+    }
   };
   const toggleModal = () => {
     setIsShowModal(!isShowModal);
-  };
-  const deleteFavItem = (id) => {
-    const filtered = favoriteCharacters.filter((item) => item.id !== id);
-    setFavoriteCharacters(filtered);
   };
 
   return (
@@ -55,7 +61,7 @@ export default function App() {
         isShowModal={isShowModal}
         favoriteCharacters={favoriteCharacters}
         toggleModal={toggleModal}
-        onDeleteFavItem={deleteFavItem}
+        onToggleFavorite={toggleFavorite}
       />
       <Navbar
         numOfCharacters={characters.length}
@@ -72,7 +78,8 @@ export default function App() {
         />
         <CharacterDetail
           characterId={characterId}
-          onAddFavorite={addFavorite}
+          onToggleFavorite={toggleFavorite}
+          favoriteCharacters={favoriteCharacters}
         />
       </div>
     </div>

@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ArrowDownCircleIcon } from "@heroicons/react/24/outline";
 
-const CharacterDetail = ({ characterId, onAddFavorite }) => {
+const CharacterDetail = ({
+  characterId,
+  onToggleFavorite,
+  favoriteCharacters,
+}) => {
   const [character, setCharacter] = useState(null);
   const [episodes, setEpisodes] = useState([]);
 
@@ -54,9 +58,11 @@ const CharacterDetail = ({ characterId, onAddFavorite }) => {
               <div className="actions">
                 <button
                   className="btn btn--primary"
-                  onClick={() => onAddFavorite(character)}
+                  onClick={() => onToggleFavorite(character)}
                 >
-                  Add to favorite
+                  {!favoriteCharacters.find((item) => item.id === character.id)
+                    ? "Add to favorite"
+                    : "Remove favorite"}
                 </button>
               </div>
             </div>
