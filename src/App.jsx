@@ -12,6 +12,7 @@ export default function App() {
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+  const [isShowModal, setIsShowModal] = useState(false);
 
   useEffect(() => {
     axios
@@ -40,9 +41,17 @@ export default function App() {
   const addFavorite = (favCharacter) => {
     setFavoriteCharacters((prevstate) => [...prevstate, favCharacter]);
   };
-  
+  const toggleModal = () => {
+    setIsShowModal(!isShowModal);
+  };
+
   return (
     <div className="app">
+      <Modal
+        isShowModal={isShowModal}
+        favoriteCharacters={favoriteCharacters}
+        toggleModal={toggleModal}
+      />
       <Navbar
         numOfCharacters={characters.length}
         favoriteCharacters={favoriteCharacters}

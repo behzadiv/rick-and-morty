@@ -1,8 +1,13 @@
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { TrashIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-const CharacterList = ({ allCharacters, onSetCharacterId, characterId }) => {
+const CharacterList = ({
+  allCharacters,
+  onSetCharacterId,
+  characterId,
+  isModalItems,
+}) => {
   return (
-    <div className="characters-list">
+    <div>
       {allCharacters.length ? (
         allCharacters.map((character) => {
           return (
@@ -11,6 +16,7 @@ const CharacterList = ({ allCharacters, onSetCharacterId, characterId }) => {
               key={character.id}
               onSetCharacterId={onSetCharacterId}
               characterId={characterId}
+              isModalItems={isModalItems}
             />
           );
         })
@@ -23,7 +29,12 @@ const CharacterList = ({ allCharacters, onSetCharacterId, characterId }) => {
 
 export default CharacterList;
 
-const CharacterItem = ({ character, onSetCharacterId, characterId }) => {
+const CharacterItem = ({
+  character,
+  onSetCharacterId,
+  characterId,
+  isModalItems,
+}) => {
   return (
     <div className="list__item">
       <img src={character.image} alt="" />
@@ -38,12 +49,21 @@ const CharacterItem = ({ character, onSetCharacterId, characterId }) => {
         <span>{character.status}</span>
         <span> - {character.species}</span>
       </div>
-      <button
-        className="icon red"
-        onClick={() => onSetCharacterId(character.id)}
-      >
-        {characterId === character.id ? <EyeSlashIcon /> : <EyeIcon />}
-      </button>
+      {isModalItems ? (
+        <button
+          className="icon red"
+          onClick={() => onSetCharacterId(character.id)}
+        >
+          <TrashIcon />
+        </button>
+      ) : (
+        <button
+          className="icon red"
+          onClick={() => onSetCharacterId(character.id)}
+        >
+          {characterId === character.id ? <EyeSlashIcon /> : <EyeIcon />}
+        </button>
+      )}
     </div>
   );
 };
