@@ -9,31 +9,32 @@ import "./App.css";
 export default function App() {
   const [characters, setCharacters] = useState([]);
   const [inputValue, setInputValue] = useState("");
-  const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
   const [isShowModal, setIsShowModal] = useState(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     axios
       .get(
-        !debouncedInputValue
+        !inputValue
           ? "https://rickandmortyapi.com/api/character"
-          : `https://rickandmortyapi.com/api/character/?name=${debouncedInputValue}`
+          : `https://rickandmortyapi.com/api/character/?name=${inputValue}`,
+        { signal }
       )
       .then(({ data }) => setCharacters(data.results.slice(0, 5)))
       .catch((err) => {
-        console.log(err.response.data);
-        return setCharacters([]);
+        if (!axios.isCancel()) {
+          console.log(err.response.data);
+          return setCharacters([]);
+        }
       });
-  }, [debouncedInputValue]);
 
-  useEffect(() => {
-    const debouncedInputValueId = setTimeout(() => {
-      setDebouncedInputValue(inputValue);
-    }, 500);
-    return () => clearTimeout(debouncedInputValueId);
-  }, [inputValue, 500]);
+    return () => {
+      controller.abort();
+    };
+  }, [inputValue]);
 
   const handleCharacterId = (id) => {
     setCharacterId((prevState) => (prevState === id ? null : id));
