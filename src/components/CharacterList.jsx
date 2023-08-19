@@ -2,7 +2,7 @@ import { TrashIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const CharacterList = ({ allCharacters, onSetCharacterId, characterId }) => {
   return (
-    <div>
+    <div className="list-container">
       {allCharacters.length ? (
         allCharacters.map((character) => {
           return (
