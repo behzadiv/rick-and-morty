@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import useLocalStorage from "./hooks/useLocalStorage";
 import Navbar, { Search } from "./components/Navbar";
 import CharacterList from "./components/CharacterList";
 import CharacterDetail from "./components/CharacterDetail";
@@ -9,9 +10,7 @@ export default function App() {
   const [characters, setCharacters] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
-  const [favoriteCharacters, setFavoriteCharacters] = useState(
-    () => JSON.parse(localStorage.getItem("favCharacter")) || []
-  );
+  const [favorites, setFavorites] = useLocalStorage("favorites", []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -35,25 +34,19 @@ export default function App() {
       controller.abort();
     };
   }, [inputValue]);
-  useEffect(() => {
-    console.log(favoriteCharacters);
-    localStorage.setItem("favCharacter", JSON.stringify(favoriteCharacters));
-  }, [favoriteCharacters]);
 
   const handleCharacterId = (id) => {
     setCharacterId((prevState) => (prevState === id ? null : id));
   };
   const toggleFavorite = (favCharacter) => {
-    const findedCharacter = favoriteCharacters.findIndex(
+    const findedCharacter = favorites.findIndex(
       (item) => item.id === favCharacter.id
     );
     if (findedCharacter < 0) {
-      setFavoriteCharacters((prevstate) => [...prevstate, favCharacter]);
+      setFavorites((prevstate) => [...prevstate, favCharacter]);
     } else {
-      const filtered = favoriteCharacters.filter(
-        (item) => item.id !== favCharacter.id
-      );
-      setFavoriteCharacters(filtered);
+      const filtered = favorites.filter((item) => item.id !== favCharacter.id);
+      setFavorites(filtered);
     }
   };
 
@@ -61,7 +54,7 @@ export default function App() {
     <div className="app">
       <Navbar
         numOfCharacters={characters.length}
-        favoriteCharacters={favoriteCharacters}
+        favoriteCharacters={favorites}
         onToggleFavorite={toggleFavorite}
       >
         <Search query={inputValue} setQuery={setInputValue} />
@@ -75,7 +68,7 @@ export default function App() {
         <CharacterDetail
           characterId={characterId}
           onToggleFavorite={toggleFavorite}
-          favoriteCharacters={favoriteCharacters}
+          favoriteCharacters={favorites}
         />
       </div>
     </div>
