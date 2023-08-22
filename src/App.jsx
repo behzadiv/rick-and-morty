@@ -5,30 +5,22 @@ import Navbar, { Search } from "./components/Navbar";
 import CharacterList from "./components/CharacterList";
 import CharacterDetail from "./components/CharacterDetail";
 import "./App.css";
+import useFetch from "./hooks/useFetch";
 
 export default function App() {
-  const [characters, setCharacters] = useState([]);
+  const [{ loading, data }, doFetch] = useFetch();
   const [inputValue, setInputValue] = useState("");
   const [characterId, setCharacterId] = useState(null);
   const [favorites, setFavorites] = useLocalStorage("favorites", []);
-
+ 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-    axios
-      .get(
-        !inputValue
-          ? "https://rickandmortyapi.com/api/character"
-          : `https://rickandmortyapi.com/api/character/?name=${inputValue}`,
-        { signal }
-      )
-      .then(({ data }) => setCharacters(data.results.slice(0, 5)))
-      .catch((err) => {
-        if (!axios.isCancel()) {
-          console.log(err.response.data);
-          return setCharacters([]);
-        }
-      });
+    doFetch({
+      url: !inputValue ? "" : `/?name=${inputValue}`,
+      method: "GET",
+      signal,
+    });
 
     return () => {
       controller.abort();
@@ -53,24 +45,28 @@ export default function App() {
   return (
     <div className="app">
       <Navbar
-        numOfCharacters={characters.length}
+        numOfCharacters={data.length}
         favoriteCharacters={favorites}
         onToggleFavorite={toggleFavorite}
       >
         <Search query={inputValue} setQuery={setInputValue} />
       </Navbar>
-      <div className="main">
-        <CharacterList
-          allCharacters={characters}
-          onSetCharacterId={handleCharacterId}
-          characterId={characterId}
-        />
-        <CharacterDetail
-          characterId={characterId}
-          onToggleFavorite={toggleFavorite}
-          favoriteCharacters={favorites}
-        />
-      </div>
+      {loading ? (
+        <p>loading ....</p>
+      ) : (
+        <div className="main">
+          <CharacterList
+            allCharacters={data}
+            onSetCharacterId={handleCharacterId}
+            characterId={characterId}
+          />
+          <CharacterDetail
+            characterId={characterId}
+            onToggleFavorite={toggleFavorite}
+            favoriteCharacters={favorites}
+          />
+        </div>
+      )}
     </div>
   );
 }
